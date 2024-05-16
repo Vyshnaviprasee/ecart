@@ -38,9 +38,9 @@ class OrderedItem (models.Model):
         (LIVE, "Live"),
         (DELETE, "Delete"),
     )
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="ordered_items")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="added_cart")
     quantity = models.IntegerField(default=1)
-    owner = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="ordered_items")
+    owner = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="added_items")
     status = models.IntegerField(choices=STATUS_CHOICES, default=LIVE)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)

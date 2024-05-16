@@ -3,6 +3,7 @@ from .models import Product
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 # Create your views here.
 

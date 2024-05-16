@@ -4,55 +4,82 @@
 
 {% block content %}
 
-    <!-- Account Page -->
-    <div class="account-page">
-        <div class="container">
-            <div class="row">
-                <div class="col-2">
-                    <img src="{% static 'images/image1.png' %}" width="100%">
-                </div>
-                <div class="col-2">
-                    <div class="form-container">
-                        <div class="form-btn">
-                            <span onclick="login()">Login</span>
-                            <span onclick="register()">Register</span>
-                            <hr id="Indicator">
-                        </div>
-                        <form id="LoginForm">
-                            <input type="text" placeholder="Username">
-                            <input type="password" placeholder="Password">
-                            <button type="submit" class="btn">Login</button>
-                            <a href="">Forget Password</a>
-                        </form>
-
-                        <form id="RegForm">
-                            <input type="text" placeholder="Username">
-                            <input type="email" placeholder="Email">
-                            <input type="password" placeholder="Password">
-                            <button type="submit" class="btn">Register</button>
-                        </form>
+<!-- Account Page -->
+<div class="account-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img src="{% static 'images/image1.png' %}" width="100%">
+            </div>
+            <div class="col-2">
+                <div class="form-container">
+                    <div class="form-btn">
+                        <span onclick="login()">Login</span>
+                        <span onclick="register()">Register</span>
+                        <hr id="Indicator">
                     </div>
+
+                    {% if messages %}
+                    <div class="container">
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <p style="color: red; padding: 10px; text-align: center; margin: 10px; border-radius: 5px; background-color: #f8d7da">{{ message }}</p>
+                            {% elif message.tags == 'success' %}
+                                <p style="color: green; padding: 10px; text-align: center; margin: 10px; border-radius: 5px; background-color: #d4edda">{{ message }}</p>
+                            {% else %}
+                                <p>{{ message }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form id="LoginForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="username" placeholder="Username">
+                        <input type="password" name="password" placeholder="Password">
+                        <button type="submit" name="login" class="btn">Login</button>
+                    </form>
+
+                    <form id="RegForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="username" maxlength="20" minlength="3" placeholder="Username" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="password" name="password" maxlength="20" minlength="3" placeholder="Password" required>
+                        <input type="number" name="phone" maxlength="10" minlength="10" placeholder="Phone" required>
+                        <input type="text" name="address" placeholder="Address" required>
+                        <button type="submit" name="register" class="btn">Register</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Toggle Form -->
+<!-- Toggle Form -->
+<script>
+    var LoginForm = document.getElementById("LoginForm");
+    var RegForm = document.getElementById("RegForm");
+    var Indicator = document.getElementById("Indicator");
+    function register() {
+        RegForm.style.transform = "translatex(0px)";
+        LoginForm.style.transform = "translatex(0px)";
+        Indicator.style.transform = "translateX(100px)";
+    }
+    function login() {
+        RegForm.style.transform = "translatex(300px)";
+        LoginForm.style.transform = "translatex(300px)";
+        Indicator.style.transform = "translate(0px)";
+    }
+</script>
+{% if register %}
     <script>
-        var LoginForm = document.getElementById("LoginForm");
-        var RegForm = document.getElementById("RegForm");
-        var Indicator = document.getElementById("Indicator");
-        function register() {
-            RegForm.style.transform = "translatex(0px)";
-            LoginForm.style.transform = "translatex(0px)";
-            Indicator.style.transform = "translateX(100px)";
-
-        }
-        function login() {
-            RegForm.style.transform = "translatex(300px)";
-            LoginForm.style.transform = "translatex(300px)";
-            Indicator.style.transform = "translate(0px)";
-
-        }
+        register()
     </script>
+
+{% else %}
+    <script>
+        login()
+    </script>
+{% endif %}
+
 {% endblock %}

@@ -25,12 +25,17 @@
                     <ul id="MenuItems">
                         <li><a href="{% url 'index' %}">Home</a></li>
                         <li><a href="{% url 'list_products' %}">Products</a></li>
-                        <li><a href="">About</a></li>
-                        <li><a href="">Contact</a></li>
+                        {% if user.is_authenticated %}
+                            <li>Hello, {{ user.username }}</li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                            <a href="{% url 'cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
+
+                        {% else %}
+                        <li>Hello, Guest</li>
                         <li><a href="{% url 'show_accounts' %}">Account</a></li>
                     </ul>
+                    {% endif %}
                 </nav>
-                <a href="{% url 'cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
                 <img src="{% static 'images/menu.png' %}" class="menu-icon" onclick="menutoggle()">
             </div>
             {% block banner %}
