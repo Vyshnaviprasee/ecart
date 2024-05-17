@@ -9,7 +9,7 @@ class Product(models.Model):
     )
     title = models.CharField(max_length=120)
     content = models.TextField(blank=True, null=True)
-    price = models.FloatField(default=99.99)
+    price = models.FloatField(default=0)
     image = models.ImageField(blank=True, null=True, upload_to="products/")
     priority = models.IntegerField(default=0)
     status = models.IntegerField(choices=STATUS_CHOICES, default=LIVE)

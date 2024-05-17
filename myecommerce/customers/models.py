@@ -22,4 +22,4 @@ class Customer(models.Model):
     updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self) -> str:
-        return self.name
+        return self.user.username

@@ -5,6 +5,20 @@
 
 {% block content %}
 
+                    {% if messages %}
+                    <div class="container">
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <p style="color: red; padding: 10px; text-align: center; margin: 10px; border-radius: 5px; background-color: #f8d7da">{{ message }}</p>
+                            {% elif message.tags == 'success' %}
+                                <p style="color: green; padding: 10px; text-align: center; margin: 10px; border-radius: 5px; background-color: #d4edda">{{ message }}</p>
+                            {% else %}
+                                <p>{{ message }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
     <!-- Cart items details -->
     <div class="small-container cart-page">
         {% if cart_items %}
@@ -21,14 +35,14 @@
                         <img src="{{ item.product.image.url }}">
                         <div>
                             <p>{{ item.product.title }}</p>
-                            <small>Price : {{ item.product.price }}</small>
+                            <small>Price : ₹ {{ item.product.price }}</small>
                             <br>
-                            <a href="">Remove</a>
+                            <a href="{% url 'remove_from_cart' item.product.pk %}">Remove</a>
                         </div>
                     </div>
                 </td>
                 <td><input type="number" disabled value="{{ item.quantity }}"></td>
-                <td>${{ item.product.price }}</td>
+                <td>₹ {{ item.product.price }}</td>
             </tr>
             {% endfor %}
         </table>
@@ -36,34 +50,44 @@
             <table>
                 <tr>
                     <td>Subtotal</td>
-                    <td>$200.00</td>
+                    <td>₹ {{ subtotal }}</td>
                 </tr>
                 <tr>
                     <td>Shipping Fee</td>
-                    <td>$35.00</td>
+                    <td>₹ {{ shipping_fee }}</td>
                 </tr>
                 <tr>
                     <td>Total</td>
-                    <td>$230.00</td>
+                    <td>₹ {{ total_price }}</td>
                 </tr>
                 <tr>
-                    <td><button style=" 
-                    padding: 10px; 
-                    border-radius: 5px; 
-                    background-color: #ff523b; 
-                    color: white; 
-                    border: none; 
-                    cursor: pointer; 
-                    font-size: 16px; 
-                    font-weight: bold; 
-                    margin-top: 10px;
-                    width: 100%;">
-                    Proceed to checkout</button> </td>
+                    <td>
+                        <form method="post" action="{% url 'checkout' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="total_price" value="{{ total_price }}">
+                            <button type="submit" class="btn" style=" 
+                            padding: 10px; 
+                            border-radius: 5px; 
+                            background-color: #ff523b; 
+                            color: white; 
+                            border: none; 
+                            cursor: pointer; 
+                            font-size: 16px; 
+                            font-weight: bold; 
+                            margin-top: 10px;
+                            width: 100%;">Proceed to checkout</button>
+                        </form>
+                    </td>
+                    
                 </tr>
             </table>
         </div>
+        
     </div>
         {% else %}
+
+       
+
         <p>Your cart is empty</p>
         {% endif %}
 {% endblock %}
