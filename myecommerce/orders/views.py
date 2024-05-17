@@ -117,3 +117,14 @@ def checkout(request):
             return redirect('cart')
 
     return redirect('index')
+
+@login_required(login_url='login')
+def show_orders(request):
+    user = request.user
+    customer = user.customer
+    all_orders = Order.objects.filter(owner=customer).exclude(order_status=Order.CART_STAGE)
+    context = {
+        'all_orders': all_orders
+    }
+
+    return render(request, 'orders.html', context)
