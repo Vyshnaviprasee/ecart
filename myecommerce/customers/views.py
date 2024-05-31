@@ -7,9 +7,7 @@ from django.contrib.auth import logout as auth_logout  # Rename the imported fun
 
 
 def show_accounts(request):
-    context = {
-        
-    }
+    context = {}
     if request.method == 'POST' and 'register' in request.POST:
         context['register'] = True
         try:

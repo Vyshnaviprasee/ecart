@@ -1,4 +1,17 @@
 {% load static %}
+{% if messages %}
+<div class="container">
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <p style="color: red; padding: 10px; text-align: center; margin: 10px; border-radius: 5px; background-color: #f8d7da">{{ message }}</p>
+        {% elif message.tags == 'success' %}
+            <p style="color: green; padding: 10px; text-align: center; margin: 10px; border-radius: 5px; background-color: #d4edda">{{ message }}</p>
+        {% else %}
+            <p>{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
 <div class="row">
     <div class="col-2">
         <h1>Give Your Workout <br> A New Style!</h1>
