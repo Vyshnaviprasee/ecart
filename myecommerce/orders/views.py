@@ -94,6 +94,7 @@ def remove_from_cart(request, pk):
 def checkout(request):
     if request.method == 'POST':
         user = request.user
+
         customer = get_customer(user)
         if not customer:
             return redirect('cart')
@@ -147,3 +148,4 @@ def show_orders(request):
         'all_orders': all_orders
     }
     return render(request, 'orders.html', context)
+
